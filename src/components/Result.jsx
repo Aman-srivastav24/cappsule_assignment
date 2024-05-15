@@ -17,6 +17,7 @@ function Result({ saltSuggestions, isLoading }) {
                 const saltStrengths = Object.keys(saltForms);
                 
                 const [selectedStrength, setSelectedStrength] = useState(saltStrengths[0]);
+                const [selectedPackaging, setSelectedPackaging] = useState(Object.keys(saltForms[selectedStrength])[0]); // State to track selected packaging
                 const [showMoreStrength, setShowMoreStrength] = useState(false);
                 const [showMoreForm, setShowMoreForm] = useState(false);
                 const [showMorePack, setShowMorePack] = useState(false);
@@ -84,20 +85,18 @@ function Result({ saltSuggestions, isLoading }) {
                                 <div className="grid grid-cols-2 gap-2">
                                     {saltForms[selectedStrength] &&
                                         Object.entries(saltForms[selectedStrength]).slice(0,numPack).map(([packing, products]) => {
-                                           
-                                            
                                             return (
                                                 <span
-                                                    className='border border-black px-2 py-1 rounded-md text-center cursor-pointer'
+                                                    className={`border border-black px-2 py-1 rounded-md text-center cursor-pointer ${packing === selectedPackaging ? 'border-green-500' : 'border-gray-300'} ${packing === selectedPackaging ? 'font-semibold' : ''}`}
                                                     key={packing}
+                                                    onClick={() => { setSelectedPackaging(packing) }} // Update selected packaging
                                                 >
                                                     {packing} 
                                                 </span>
                                             );
                                         })
-                                        
                                     }
-                                      {Object.entries(saltForms[selectedStrength]).length > 4 && (
+                                    {Object.entries(saltForms[selectedStrength]).length > 4 && (
                                         <button onClick={handleShowMorePack} className="text-green-500 font-bold ">
                                             {showMorePack ? 'Hide' : ' More'}
                                         </button>
@@ -110,29 +109,28 @@ function Result({ saltSuggestions, isLoading }) {
                             <p className='text-[14px] text-slate-400'>{salt.most_common.Form} | {salt.most_common.Strength} | {salt.most_common.Packing}</p>
                         </div>
                         <div className="resultCardRight w-[30%] flex justify-center items-center">
-    {saltForms[selectedStrength] &&
-        (() => {
-            let lowestPrice = Infinity;
-            let hasAvailableProducts = false;
-            Object.values(saltForms[selectedStrength]).forEach(products => {
-                const availableProducts = Object.values(products).filter(product => Array.isArray(product) && product.length > 0);
-                if (availableProducts.length > 0) {
-                    const price = availableProducts[0][0].selling_price;
-                    if (price < lowestPrice) {
-                        lowestPrice = price;
-                    }
-                    hasAvailableProducts = true;
-                }
-            });
-            if (hasAvailableProducts) {
-                return <p className='text-[28px] font-bold'>From ${lowestPrice}</p>;
-            } else {
-                return <p className='text-[28px] font-bold'>Not available</p>;
-            }
-        })()
-    }
-</div>
-
+                            {saltForms[selectedStrength] && (() => {
+                                let lowestPrice = Infinity;
+                                let hasAvailableProducts = false;
+                                Object.entries(saltForms[selectedStrength]).forEach(([packing, products]) => {
+                                    if (packing === selectedPackaging) { // Only consider the selected packaging
+                                        const availableProducts = Object.values(products).filter(product => Array.isArray(product) && product.length > 0);
+                                        if (availableProducts.length > 0) {
+                                            const price = availableProducts[0][0].selling_price;
+                                            if (price < lowestPrice) {
+                                                lowestPrice = price;
+                                            }
+                                            hasAvailableProducts = true;
+                                        }
+                                    }
+                                });
+                                if (hasAvailableProducts) {
+                                    return <p className='text-[28px] font-bold'>From ${lowestPrice}</p>;
+                                } else {
+                                    return <p className='text-[28px] font-bold'>Not available</p>;
+                                }
+                            })()}
+                        </div>
                     </div>
                 );
             })}
