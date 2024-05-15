@@ -15,11 +15,14 @@ function Result({ saltSuggestions, isLoading }) {
                 const [selectForm, setSelectForm] = useState("Tablet")
                 const saltForms = salt.salt_forms_json[selectForm];
                 const saltStrengths = Object.keys(saltForms);
+                
                 const [selectedStrength, setSelectedStrength] = useState(saltStrengths[0]);
                 const [showMoreStrength, setShowMoreStrength] = useState(false);
                 const [showMoreForm, setShowMoreForm] = useState(false);
+                const [showMorePack, setShowMorePack] = useState(false);
                 const [numStrength, setNumStrength] = useState(4);
                 const [numForm, setNumForm] = useState(4);
+                const [numPack, setNumPack] = useState(4);
 
                 const handleShowMoreStrength = () => {
                     setShowMoreStrength(!showMoreStrength);
@@ -28,6 +31,10 @@ function Result({ saltSuggestions, isLoading }) {
                 const handleShowMoreForm = () => {
                     setShowMoreForm(!showMoreForm);
                     showMoreForm ? setNumForm(4) : setNumForm(10);
+                };
+                const handleShowMorePack = () => {
+                    setShowMorePack(!showMorePack);
+                    showMorePack ? setNumPack(4) : setNumPack(10);
                 };
 
                 return (
@@ -76,7 +83,7 @@ function Result({ saltSuggestions, isLoading }) {
                                 <p className='mr-2 '>Packaging :</p>
                                 <div className="grid grid-cols-2 gap-2">
                                     {saltForms[selectedStrength] &&
-                                        Object.entries(saltForms[selectedStrength]).map(([packing, products]) => {
+                                        Object.entries(saltForms[selectedStrength]).slice(0,numPack).map(([packing, products]) => {
                                            
                                             
                                             return (
@@ -88,7 +95,13 @@ function Result({ saltSuggestions, isLoading }) {
                                                 </span>
                                             );
                                         })
+                                        
                                     }
+                                      {Object.entries(saltForms[selectedStrength]).length > 4 && (
+                                        <button onClick={handleShowMorePack} className="text-green-500 font-bold ">
+                                            {showMorePack ? 'Hide' : ' More'}
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         </div>
