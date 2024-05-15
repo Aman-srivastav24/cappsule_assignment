@@ -10,13 +10,13 @@ const App = () => {
   
 
 
-  useEffect(() => {
-    // Fetch initial data
+  // useEffect(() => {
+  //   // Fetch initial data
     
-    fetchSaltSuggestions('paracetamol')
-      .then((data) => setSaltSuggestions(data))
-      .catch((error) => console.error('Error fetching data:', error));
-  }, []);
+  //   fetchSaltSuggestions('paracetamol')
+  //     .then((data) => setSaltSuggestions(data))
+  //     .catch((error) => console.error('Error fetching data:', error));
+  // }, []);
   
   const handleSearch =(searchTerm)=>{
     setIsloading(false);

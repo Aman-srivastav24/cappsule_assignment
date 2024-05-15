@@ -46,7 +46,7 @@ function Result({ saltSuggestions, isLoading }) {
                                 <div className="grid grid-cols-2 gap-2">
                                     {(salt.available_forms).slice(0, numForm).map((form, formIndex) => (
                                         <span
-                                            className={`border border-black px-2 py-1 rounded-md text-center cursor-pointer ${form === selectForm ? 'border-green-500' : 'border-gray-300'} ${form === selectForm ? 'font-semibold' : ''}`}
+                                            className={`border border-black px-2 py-1 rounded-md text-center cursor-pointer ${form === selectForm ? 'border-[#112D31] border-2' : 'border-gray-300'} ${form === selectForm ? 'font-semibold' : ''}`}
                                             key={formIndex}
                                             onClick={() => { setSelectForm(form) }}
                                             value={form}
@@ -66,7 +66,7 @@ function Result({ saltSuggestions, isLoading }) {
                                 <div className="grid grid-cols-2 gap-2">
                                     {saltStrengths.slice(0, numStrength).map((strength, strengthIndex) => (
                                         <span
-                                            className={`border border-black px-2 py-1 rounded-md text-center cursor-pointer ${strength === selectedStrength ? 'border-green-500' : 'border-gray-300'} ${strength === selectedStrength ? 'font-semibold' : ''}`}
+                                            className={`border border-black px-2 py-1 rounded-md text-center cursor-pointer ${strength === selectedStrength ? 'border-[#112D31] border-2' : 'border-gray-300'} ${strength === selectedStrength ? 'font-semibold' : ''}`}
                                             key={strengthIndex}
                                             onClick={() => { setSelectedStrength(strength) }}
                                         >
@@ -87,7 +87,7 @@ function Result({ saltSuggestions, isLoading }) {
                                         Object.entries(saltForms[selectedStrength]).slice(0,numPack).map(([packing, products]) => {
                                             return (
                                                 <span
-                                                    className={`border border-black px-2 py-1 rounded-md text-center cursor-pointer ${packing === selectedPackaging ? 'border-green-500' : 'border-gray-300'} ${packing === selectedPackaging ? 'font-semibold' : ''}`}
+                                                    className={`border border-black px-2 py-1 rounded-md text-center cursor-pointer ${packing === selectedPackaging ? 'border-[#112D31] border-2' : 'border-gray-300'} ${packing === selectedPackaging ? 'font-semibold' : ''}`}
                                                     key={packing}
                                                     onClick={() => { setSelectedPackaging(packing) }} // Update selected packaging
                                                 >
@@ -125,9 +125,9 @@ function Result({ saltSuggestions, isLoading }) {
                                     }
                                 });
                                 if (hasAvailableProducts) {
-                                    return <p className='text-[28px] font-bold'>From ${lowestPrice}</p>;
+                                    return <p className='text-[28px] font-bold'>From ₹{lowestPrice}</p>;
                                 } else {
-                                    return <p className='text-[28px] font-bold'>Not available</p>;
+                                    return <p className='text-[15px] text-center border border-[#112D31] px-4 py-2 rounded-md w-[200px] bg-white'>No Store selling this product near you</p>;
                                 }
                             })()}
                         </div>
